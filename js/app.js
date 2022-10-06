@@ -4103,6 +4103,13 @@
         }));
     }));
     Swiper.use([ Resize, Observer ]);
+    document.querySelector(".plyr__video-embed__container");
+    const plyrPlayer = document.querySelector(".plyr__video-embed");
+    if (plyrPlayer) {
+        let plyrDistans = plyrPlayer.offsetTop;
+        console.log("======= Расстояние до видео ===========");
+        console.log(plyrDistans);
+    }
     const iconMenu = document.querySelector(".menu_icon");
     const menuBody = document.querySelector(".burger_menu");
     const sideBar = document.querySelector(".sidebar_menu");
@@ -4112,7 +4119,7 @@
         menuBody.classList.toggle("_active");
         sideBar.classList.toggle("_active");
         const menuWidth = menuBody.offsetWidth;
-        if (sideBar.classList.contains("_active")) sideBar.style.left = menuWidth + "px"; else sideBar.style.left = 0 + "px";
+        if (sideBar.classList.contains("_active")) sideBar.style.left = menuWidth - 1 + "px"; else sideBar.style.left = 0 + "px";
     }));
     const createSliderObserver = () => {
         const observer = new IntersectionObserver((entries => {
@@ -4145,35 +4152,38 @@
         elements.forEach((element => observer.observe(element)));
     };
     createSliderObserver();
-    const paralaxBoxes = document.querySelectorAll(".about__block");
-    for (let i = 0; i < paralaxBoxes.length; i++) {
-        let moveBlock = paralaxBoxes[i].children[0].children[0];
-        let moveBlockHeight = moveBlock.offsetHeight;
-        paralaxBoxes[i].style.paddingBottom = moveBlockHeight + 100 + "px";
-    }
-    const createObserverParalax = () => {
-        const observer = new IntersectionObserver((entries => {
-            entries.forEach((entry => {
-                if (entry.isIntersecting) {
-                    console.log("Вижу");
-                    window.addEventListener("scroll", (function() {
-                        let paralaxElement = entry.target.children[0].children[0];
-                        paralaxElement.offsetHeight;
-                        let scrollDisatnce = window.scrollY;
-                        let screenHeight = window.innerHeight;
-                        entry.target.offsetHeight;
-                        let x = entry.target.offsetTop - scrollDisatnce;
-                        if (x < screenHeight) paralaxElement.style.top = x - 150 + "px";
-                    }));
-                } else console.log("не вижу");
-            }));
-        }), {
-            threshold: 0
-        });
-        const sections = document.querySelectorAll(".about__block");
-        sections.forEach((section => observer.observe(section)));
-    };
-    createObserverParalax();
+    window.addEventListener("scroll", (function() {
+        let scrollDisatnce = window.scrollY;
+        let screenH = window.innerHeight;
+        const movedBlock = document.querySelector(".about__move_block");
+        let movedBlockHeight = movedBlock.offsetHeight;
+        const aboutMainBlock = document.querySelector(".about_me_paralax_box");
+        const topAboutDistans = aboutMainBlock.offsetTop;
+        const staticAboutBlock = document.querySelector(".about__background");
+        aboutMainBlock.scrollHeight;
+        let rollAboutscr = scrollDisatnce - topAboutDistans;
+        let rollscrUp = screenH - rollAboutscr;
+        console.log(topAboutDistans);
+        console.log(scrollDisatnce);
+        if (topAboutDistans < scrollDisatnce && scrollDisatnce + screenH < topAboutDistans + movedBlockHeight) {
+            console.log("----------Нашли-----------");
+            staticAboutBlock.style.transform = "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + rollAboutscr + ",0,1)";
+            movedBlock.style.transform = "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + rollscrUp + ",0,1)";
+        }
+    }));
+    window.addEventListener("scroll", (function() {
+        let scrollDisatnce = window.scrollY;
+        let screenH = window.innerHeight;
+        const differentScrollBlock = document.querySelector(".Partners");
+        const topDistans = differentScrollBlock.offsetTop;
+        const staticBlock = document.querySelector(".partners__company");
+        let heightScrollingBlock = differentScrollBlock.offsetHeight;
+        let rollscr = scrollDisatnce - topDistans;
+        if (topDistans < scrollDisatnce && scrollDisatnce + screenH < topDistans + heightScrollingBlock) {
+            console.log("----------Нашли-----------");
+            staticBlock.style.transform = "translateY(" + rollscr + "px" + ")";
+        }
+    }));
     window["FLS"] = true;
     isWebp();
     tabs();

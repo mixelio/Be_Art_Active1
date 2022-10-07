@@ -4165,7 +4165,7 @@
         let rollscrUp = screenH - rollAboutscr;
         console.log(topAboutDistans);
         console.log(scrollDisatnce);
-        if (topAboutDistans < scrollDisatnce && scrollDisatnce + screenH < topAboutDistans + movedBlockHeight) {
+        if (topAboutDistans < scrollDisatnce && scrollDisatnce + screenH < topAboutDistans + movedBlockHeight + rollAboutscr) {
             console.log("----------Нашли-----------");
             staticAboutBlock.style.transform = "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + rollAboutscr + ",0,1)";
             movedBlock.style.transform = "matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,0," + rollscrUp + ",0,1)";
@@ -4174,14 +4174,17 @@
     window.addEventListener("scroll", (function() {
         let scrollDisatnce = window.scrollY;
         let screenH = window.innerHeight;
+        let screenW = window.innerWidth;
         const differentScrollBlock = document.querySelector(".Partners");
         const topDistans = differentScrollBlock.offsetTop;
         const staticBlock = document.querySelector(".partners__company");
         let heightScrollingBlock = differentScrollBlock.offsetHeight;
         let rollscr = scrollDisatnce - topDistans;
-        if (topDistans < scrollDisatnce && scrollDisatnce + screenH < topDistans + heightScrollingBlock) {
+        if (topDistans < scrollDisatnce && scrollDisatnce + screenH < topDistans + heightScrollingBlock && screenW > 750) {
             console.log("----------Нашли-----------");
             staticBlock.style.transform = "translateY(" + rollscr + "px" + ")";
+            differentScrollBlock.nextElementSibling.style.marginTop = rollscr + "px";
+            console.log(differentScrollBlock.nextElementSibling);
         }
     }));
     window["FLS"] = true;
